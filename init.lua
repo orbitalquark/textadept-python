@@ -60,15 +60,15 @@ textadept.editing.autocompleters.python = function()
   local assignment = '%f[%w_]' .. symbol:gsub('(%p)', '%%%1') .. '%s*=%s*(.*)$'
   for i = buffer:line_from_position(buffer.current_pos) - 1, 1, -1 do
     local expr = buffer:get_line(i):match(assignment)
-    if expr then
-      for patt, type in pairs(M.expr_types) do
-        if expr:find(patt) then symbol = type break end
-      end
-      if expr:find('^[%u][%w_.]*%s*%b()%s*$') then
-        symbol = expr:match('^([%u][%w_.]+)%s*%b()%s*$') -- e.g. a = Foo()
-        break
-      end
+    if not expr then goto continue end
+    for patt, type in pairs(M.expr_types) do
+      if expr:find(patt) then symbol = type break end
     end
+    if expr:find('^[%u][%w_.]*%s*%b()%s*$') then
+      symbol = expr:match('^([%u][%w_.]+)%s*%b()%s*$') -- e.g. a = Foo()
+      break
+    end
+    ::continue::
   end
   -- Search through ctags for completions for that symbol.
   local name_patt = '^' .. part
@@ -77,14 +77,13 @@ textadept.editing.autocompleters.python = function()
     if not lfs.attributes(filename) then goto continue end
     for line in io.lines(filename) do
       local name = line:match('^%S+')
-      if name:find(name_patt) and not list[name] then
-        local fields = line:match(';"\t(.*)$')
-        local k, class = fields:sub(1, 1), fields:match('class:(%S+)') or ''
-        if class == symbol and (op ~= ':' or k == 'f') then
-          list[#list + 1] = name .. sep .. xpms[k]
-          list[name] = true
-        end
+      if not name:find(name_patt) or list[name] then goto continue end
+      local fields = line:match(';"\t(.*)$')
+      local k, class = fields:sub(1, 1), fields:match('class:(%S+)') or ''
+      if class == symbol then
+        list[#list + 1], list[name] = name .. sep .. xpms[k], truen
       end
+      ::continue::
     end
     ::continue::
   end
