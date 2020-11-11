@@ -10,16 +10,6 @@ It provides utilities for editing Python code.
 
 ## Tables defined by `_M.python`
 
-<a id="keys.python"></a>
-### `keys.python`
-
-Container for Python-specific key bindings.
-
-<a id="snippets.python"></a>
-### `snippets.python`
-
-Container for Python-specific snippets.
-
 <a id="_M.python.expr_types"></a>
 ### `_M.python.expr_types`
 

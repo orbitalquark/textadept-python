@@ -128,43 +128,32 @@ events.connect(events.CHAR_ADDED, function(ch)
   end
 end)
 
----
--- Container for Python-specific key bindings.
--- @class table
--- @name _G.keys.python
-keys.python = {
-  ['shift+\n'] = function()
-    buffer:line_end()
-    buffer:add_text(':')
-    buffer:new_line()
-  end,
-}
+keys.python['shift+\n'] = function()
+  buffer:line_end()
+  buffer:add_text(':')
+  buffer:new_line()
+end
 
 -- Snippets.
 
----
--- Container for Python-specific snippets.
--- @class table
--- @name _G.snippets.python
-snippets.python = {
-  ['.'] = 'self.',
-  __ = '__%1(init)__',
-  def = 'def %1(name)(%2(arg)):\n\t%3("""%4\n\t"""\n\t)',
-  defs = 'def %1(name)(self%2(, %3(arg))):\n\t%4("""%5\n\t"""\n\t)',
-  ifmain = 'if __name__ == "__main__":\n\t%1(main())',
-  class = [[
+local snip = snippets.python
+snip['.'] = 'self.'
+snip.__ = '__%1(init)__'
+snip.def = 'def %1(name)(%2(arg)):\n\t%3("""%4\n\t"""\n\t)'
+snip.defs = 'def %1(name)(self%2(, %3(arg))):\n\t%4("""%5\n\t"""\n\t)'
+snip.ifmain = 'if __name__ == "__main__":\n\t%1(main())'
+snip.class = [[
 class %1(ClassName)(%2(object)):
 """%3(documentation)
 """
 def __init__(self%4(, %5(arg))):
-  %6(super(%1, self).__init__())]],
-  try = [[
+  %6(super(%1, self).__init__())]]
+snip.try = [[
 try:
-%0
+	%0
 except %2(Exception), %3(e):
-%4(pass)%5(
+	%4(pass)%5(
 finally:
-%6(pass))]]
-}
+	%6(pass))]]
 
 return M
