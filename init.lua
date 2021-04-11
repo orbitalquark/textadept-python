@@ -1,4 +1,4 @@
--- Copyright 2007-2020 Mitchell. See LICENSE.
+-- Copyright 2007-2021 Mitchell. See LICENSE.
 
 local M = {}
 
@@ -27,6 +27,7 @@ end)
 -- @name tags
 M.tags = {_HOME .. '/modules/python/tags', _USERHOME .. '/modules/python/tags'}
 
+-- LuaFormatter off
 ---
 -- Map of expression patterns to their types.
 -- Expressions are expected to match after the '=' sign of a statement.
@@ -41,19 +42,16 @@ M.expr_types = {
   ['^%d+%f[^%d%.]'] = 'int',
   ['^%d+%.'] = 'float'
 }
+-- LuaFormatter on
 
 local XPM = textadept.editing.XPM_IMAGES
-local xpms = {
-  c = XPM.CLASS, f = XPM.METHOD, m = XPM.VARIABLE, M = XPM.STRUCT,
-  v = XPM.VARIABLE
-}
+local xpms = {c = XPM.CLASS, f = XPM.METHOD, m = XPM.VARIABLE, M = XPM.STRUCT, v = XPM.VARIABLE}
 
 textadept.editing.autocompleters.python = function()
   local list = {}
   -- Retrieve the symbol behind the caret.
   local line, pos = buffer:get_cur_line()
-  local symbol, op, part = line:sub(1, pos - 1):match(
-    '([%w_%.]-)(%.?)([%w_]*)$')
+  local symbol, op, part = line:sub(1, pos - 1):match('([%w_%.]-)(%.?)([%w_]*)$')
   if symbol == '' and part == '' then return nil end -- nothing to complete
   -- Attempt to identify the symbol type.
   -- TODO: identify literals like "'foo'." and "[1, 2, 3].".
@@ -62,7 +60,10 @@ textadept.editing.autocompleters.python = function()
     local expr = buffer:get_line(i):match(assignment)
     if not expr then goto continue end
     for patt, type in pairs(M.expr_types) do
-      if expr:find(patt) then symbol = type break end
+      if expr:find(patt) then
+        symbol = type
+        break
+      end
     end
     if expr:find('^[%u][%w_.]*%s*%b()%s*$') then
       symbol = expr:match('^([%u][%w_.]+)%s*%b()%s*$') -- e.g. a = Foo()
@@ -80,9 +81,7 @@ textadept.editing.autocompleters.python = function()
       if not name:find(name_patt) or list[name] then goto continue end
       local fields = line:match(';"\t(.*)$')
       local k, class = fields:sub(1, 1), fields:match('class:(%S+)') or ''
-      if class == symbol then
-        list[#list + 1], list[name] = name .. sep .. xpms[k], truen
-      end
+      if class == symbol then list[#list + 1], list[name] = name .. sep .. xpms[k], truen end
       ::continue::
     end
     ::continue::
@@ -103,21 +102,17 @@ events.connect(events.CHAR_ADDED, function(ch)
   if l > 1 then
     local line = buffer:get_line(l - (ch == 10 and 1 or 0))
     if ch == 10 and line:find(':%s+$') then
-      buffer.line_indentation[l] = buffer.line_indentation[l - 1] +
-        buffer.tab_width
+      buffer.line_indentation[l] = buffer.line_indentation[l - 1] + buffer.tab_width
       buffer:goto_pos(buffer.line_indent_position[l])
     elseif ch == 58 and
-           (line:find('^%s*else%s*:') or line:find('^%s*elif[^:]+:') or
-             line:find('^%s*except[^:]*:') or line:find('^%s*finally%s*:')) then
+      (line:find('^%s*else%s*:') or line:find('^%s*elif[^:]+:') or line:find('^%s*except[^:]*:') or
+        line:find('^%s*finally%s*:')) then
       local try = not line:find('^%s*el')
       for i = l - 1, 1, -1 do
         line = buffer:get_line(i)
-        if buffer.line_indentation[i] <= buffer.line_indentation[l] and
-           (not try and
-             (line:find('^%s*if[^:]+:%s+$') or
-               line:find('^%s*while[^:]+:%s+$') or
-               line:find('^%s*for[^:]+:%s+$')) or
-           line:find('^%s*try%s*:%s+$')) then
+        if buffer.line_indentation[i] <= buffer.line_indentation[l] and (not try and
+          (line:find('^%s*if[^:]+:%s+$') or line:find('^%s*while[^:]+:%s+$') or
+            line:find('^%s*for[^:]+:%s+$')) or line:find('^%s*try%s*:%s+$')) then
           local pos, s = buffer.current_pos, buffer.line_indent_position[l]
           buffer.line_indentation[l] = buffer.line_indentation[i]
           buffer:goto_pos(pos + buffer.line_indent_position[l] - s)
@@ -147,7 +142,7 @@ class %1(ClassName)(%2(object)):
 """%3(documentation)
 """
 def __init__(self%4(, %5(arg))):
-  %6(super(%1, self).__init__())]]
+	%6(super(%1, self).__init__())]]
 snip.try = [[
 try:
 	%0

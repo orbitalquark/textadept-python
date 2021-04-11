@@ -1,4 +1,4 @@
-# Copyright 2012-2020 Mitchell. See LICENSE.
+# Copyright 2012-2021 Mitchell. See LICENSE.
 
 # This script uses Python to generate tags and apidoc for the Textadept Python
 # module. To regenerate, modify the list of modules as necessary and then run
@@ -356,8 +356,8 @@ def format_doc(doc):
 
 def tag_object(obj, name):
   """
-  Loop through all attrs in the given, named object, tagging and documenting
-  sub-modules, classes, functions, and class members.
+  Loop through all attrs in the given, named object, tagging and documenting sub-modules,
+  classes, functions, and class members.
   If no name for the object is given, `obj.__name__` is used.
   """
   name = name if name != None else obj.__name__
@@ -377,38 +377,31 @@ def tag_object(obj, name):
     elif attr_type is types.ClassType:
       # Tag and document the class.
       tags.write(TAG % (attr, 'c', ext_fields))
-      api.write('%s %s\\n%s\n' %
-                (attr, full_name, format_doc(mod_attr.__doc__)))
+      api.write('%s %s\\n%s\n' % (attr, full_name, format_doc(mod_attr.__doc__)))
       tag_object(mod_attr, None)
     elif callable(mod_attr):
       # Tag and document the function.
-      # If the documentation contains a function signature, use it. Otherwise
-      # it is assumed to be empty.
+      # If the documentation contains a function signature, use it. Otherwise it is assumed to
+      # be empty.
       tags.write(TAG % (attr, 'f', ext_fields))
       try:
         i = (mod_attr.__doc__ or '').find(attr + '(')
       except:
         i = -1
       if i >= 0:
-        api.write('%s %s%s\n' %
-                  (attr, full_name,
-                   format_doc(mod_attr.__doc__[i + len(attr):])))
+        api.write('%s %s%s\n' % (attr, full_name, format_doc(mod_attr.__doc__[i + len(attr):])))
       else:
-        api.write('%s %s()\\n%s\n' %
-                  (attr, full_name, format_doc(mod_attr.__doc__)))
+        api.write('%s %s()\\n%s\n' % (attr, full_name, format_doc(mod_attr.__doc__)))
     else:
       # Tag and document the class member.
       tags.write(TAG % (attr, 'm', ext_fields))
-      api.write('%s %s [%s]\n' %
-                (attr, full_name, re.search("'([^']+)'",
-                                            str(attr_type)).group(1)))
+      api.write('%s %s [%s]\n' % (attr, full_name, re.search("'([^']+)'", str(attr_type)).group(1)))
 
 def tag_module(module):
   """
   Tags and writes apidoc for the given string module name.
-  Also tags and documents classes, functions, and class members in the module.
-  Any submodules with subsequent classes, functions, and class memebrs are also
-  imported, tagged, and documented.
+  Also tags and documents classes, functions, and class members in the module.  Any submodules
+  with subsequent classes, functions, and class memebrs are also imported, tagged, and documented.
   """
 
   try:
@@ -422,8 +415,7 @@ def tag_module(module):
     i = module.rfind('.')
     ext_fields = 'class:%s' % module[:i] if i >= 0 else ''
     tags.write(TAG % (module[i + 1:], 'M', ext_fields))
-    api.write('%s %s\\n%s\n' %
-              (module[i + 1:], module, format_doc(mod.__doc__)))
+    api.write('%s %s\\n%s\n' % (module[i + 1:], module, format_doc(mod.__doc__)))
 
     tag_object(mod, module)
   except ImportError, e:
