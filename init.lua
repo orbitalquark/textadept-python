@@ -81,7 +81,7 @@ textadept.editing.autocompleters.python = function()
       if not name:find(name_patt) or list[name] then goto continue end
       local fields = line:match(';"\t(.*)$')
       local k, class = fields:sub(1, 1), fields:match('class:(%S+)') or ''
-      if class == symbol then list[#list + 1], list[name] = name .. sep .. xpms[k], truen end
+      if class == symbol then list[#list + 1], list[name] = name .. sep .. xpms[k], true end
       ::continue::
     end
     ::continue::
