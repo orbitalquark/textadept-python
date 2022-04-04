@@ -143,12 +143,6 @@ class %1(ClassName)(%2(object)):
 	'''
 	def __init__(self%4(, %5(arg))):
 		%6(super(%1, self).__init__())]]
-snip.try = [[
-try:
-	%0
-except %2(Exception) as %3(e):
-	%4(pass)%5(
-finally:
-    %6(pass))]]
+snip.try = "try:\n\t%0\nexcept %2(Exception) as %3(e):\n\t%4(pass)%5(\nfinally:\n\t%6(pass))"
 
 return M
