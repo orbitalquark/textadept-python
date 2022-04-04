@@ -134,13 +134,13 @@ end
 local snip = snippets.python
 snip['.'] = 'self.'
 snip.__ = '__%1(init)__'
-snip.def = "def %1(name)(%2(arg)):\n\t%3('''%4\n\t'''\n\t)"
-snip.defs = "def %1(name)(self%2(, %3(arg))):\n\t%4('''%5\n\t'''\n\t)"
+snip.def = "def %1(name)(%2(arg)):\n\t%3('''%4'''\n\t)"
+snip.defs = "def %1(name)(self%2(, %3(arg))):\n\t%4('''%5'''\n\t)"
 snip.ifmain = "if __name__ == '__main__':\n\t%1(main())"
 snip.class = [[
 class %1(ClassName)(%2(object)):
-	'''%3(documentation)
-	'''
+	'''%3(documentation)'''
+
 	def __init__(self%4(, %5(arg))):
 		%6(super(%1, self).__init__())]]
 snip.try = "try:\n\t%0\nexcept %2(Exception) as %3(e):\n\t%4(pass)%5(\nfinally:\n\t%6(pass))"
