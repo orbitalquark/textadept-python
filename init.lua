@@ -134,29 +134,18 @@ end
 local snip = snippets.python
 snip['.'] = 'self.'
 snip.__ = '__%1(init)__'
-snip.def = [[
-def %1(name)(%2(arg)):
-	%3('''%4'''
-	)]]
-snip.defs = [[
-def %1(name)(self%2(, %3(arg))):
-	%4('''%5'''
-	)]]
-snip.ifmain = [[
-if __name__ == '__main__':
-	%1(main())]]
-snip.class = [[
-class %1(ClassName)%2((%3(object))):
-	%4('''%5(documentation)'''
-
-	)def __init__(self%6(, %7(arg))):
-		%8(super(%1, self).__init__())]]
-snip.try = [[
-try:
-	%0
-except %2(Exception) as %3(e):
-	%4(pass)%5(
-finally:
-	%6(pass))]]
+snip.def = "def %1(name)(%2(self)%3(, %4(arg))):\n" ..
+"\t%5('''%6'''\n" ..
+"\t)\n"
+snip.ifmain = "if __name__ == '__main__':\n" ..
+"\t%1(main())\n"
+snip.class = "class %1(ClassName)%0:\n\t'''%2(documentation)'''\n\n" ..
+"\tdef __init__(self%3(, %4(arg))):\n\t\t%5(super(%1, self).__init__())n"
+snip.try = "try:\n" ..
+"\t%0\n"..
+"except %2(Exception) as %3(e):\n" ..
+"\t%4(pass)%5(\n" ..
+"finally:\n" ..
+"\t%6(pass))\n"
 
 return M
