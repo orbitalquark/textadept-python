@@ -97,7 +97,7 @@ textadept.editing.api_files.python = {
 
 -- Indent on 'Enter' after a ':' or auto-indent on ':'.
 events.connect(events.CHAR_ADDED, function(ch)
-  if buffer:get_lexer() ~= 'python' or (ch ~= 10 and ch ~= 58) then return end
+  if buffer.lexer_language ~= 'python' or (ch ~= 10 and ch ~= 58) then return end
   local l = buffer:line_from_position(buffer.current_pos)
   if l > 1 then
     local line = buffer:get_line(l - (ch == 10 and 1 or 0))
