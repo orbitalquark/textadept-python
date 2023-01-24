@@ -3,6 +3,8 @@
 The python module for Textadept.
 It provides utilities for editing Python code.
 
+**WARNING:** this module is deprecated. It will no longer work in Textadept 12.0.
+
 ## Key Bindings
 
 + `Shift+Enter` (`⇧↩` | `S-Enter`)
