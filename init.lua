@@ -134,29 +134,27 @@ end
 local snip = snippets.python
 snip['.'] = 'self.'
 snip.__ = '__%1(init)__'
-snip.def = [[
-def %1(name)(%2(arg)):
-	%3('''%4'''
-	)]]
-snip.defs = [[
-def %1(name)(self%2(, %3(arg))):
-	%4('''%5'''
-	)]]
-snip.ifmain = [[
-if __name__ == '__main__':
-	%1(main())]]
-snip.class = [[
-class %1(ClassName)%2((%3(object))):
-	%4('''%5(documentation)'''
-
-	)def __init__(self%6(, %7(arg))):
-		%8(super(%1, self).__init__())]]
-snip.try = [[
-try:
-	%0
-except %2(Exception) as %3(e):
-	%4(pass)%5(
-finally:
-	%6(pass))]]
-
+snip.def = table.concat({
+  "def %1(name)(%2(self%3(, ))%4(arg)):",
+  "\t%5('''%6(doc)''')",
+  "",
+  "\t%0"
+}, '\n')
+snip.ifmain = "if __name__ == '__main__':\n" ..
+"\t%1(main())\n"
+snip.class = table.concat({
+  "class %1(ClassName)%2((%3(object))):",
+  "\t%4('''%5(doc)'''",
+  "",
+  "\t)def __init__(self%6(, %7(arg))):",
+  "\t\t%8(super(%1, self).__init__())"
+}, '\n')
+snip.try = table.concat({
+  "try:",
+  "\t%0",
+  "except %2(Exception) as %3(e):",
+  "\t%4(pass)%5(",
+  "finally:",
+  "\t%6(pass))"
+}, '\n')
 return M
